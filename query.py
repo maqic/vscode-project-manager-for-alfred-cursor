@@ -14,25 +14,39 @@ if os.path.exists(consts.stats_file):
 	except Exception:
 		pass
 
-projects = []
-for json_file in consts.project_manager_json_files:
-	full_path_json_file = os.path.join(consts.BASE_DIR, json_file)
-	if os.path.exists(full_path_json_file):
-		try:
-			with open(full_path_json_file, 'r') as file:
-				for p in json.loads(file.read()):
-					project_path = p['fullPath'] if 'fullPath' in p else p['rootPath']
-					projects.append({
-						"title": p['name'],
-						"subtitle": project_path,
-						"arg": project_path
-					})
-				file.close()
-		except Exception:
-			pass
+def read_projects_from_dir(base_dir):
+	projects = []
+	for json_file in consts.project_manager_json_files:
+		full_path_json_file = os.path.join(base_dir, json_file)
+		if os.path.exists(full_path_json_file):
+			try:
+				with open(full_path_json_file, 'r') as file:
+					for p in json.loads(file.read()):
+						project_path = p['fullPath'] if 'fullPath' in p else p['rootPath']
+						projects.append({
+							"title": p['name'],
+							"subtitle": project_path,
+							"arg": project_path
+						})
+					file.close()
+			except Exception:
+				pass
+	return projects
+
+# Get projects from both Cursor and VSCode
+projects = read_projects_from_dir(consts.BASE_DIR)
+vscode_projects = read_projects_from_dir(consts.VSCODE_BASE_DIR)
+
+# Merge projects, removing duplicates based on project path
+seen_paths = set()
+unique_projects = []
+for p in projects + vscode_projects:
+	if p['arg'] not in seen_paths:
+		seen_paths.add(p['arg'])
+		unique_projects.append(p)
 
 # Sort by stats and then by title
-projects = sorted(projects, key=lambda k: (-int(stats[k['arg']]) if k['arg'] in stats else 0, k['title']))
+projects = sorted(unique_projects, key=lambda k: (-int(stats[k['arg']]) if k['arg'] in stats else 0, k['title']))
 
 # Filter by query
 if len(sys.argv) > 1 and sys.argv[1]:

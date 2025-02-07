@@ -50,7 +50,7 @@
 			<key>config</key>
 			<dict>
 				<key>openwith</key>
-				<string>/Applications/Visual Studio Code.app</string>
+				<string>/Applications/Cursor.app</string>
 				<key>sourcefile</key>
 				<string></string>
 			</dict>
@@ -77,7 +77,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
-				<string>code</string>
+				<string>cursor</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -97,7 +97,7 @@
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>Open VSCode Project</string>
+				<string>Open Cursor Project</string>
 				<key>type</key>
 				<integer>8</integer>
 				<key>withspace</key>
