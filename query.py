@@ -33,20 +33,11 @@ def read_projects_from_dir(base_dir):
 				pass
 	return projects
 
-# Get projects from both Cursor and VSCode
+# Get projects from Cursor
 projects = read_projects_from_dir(consts.BASE_DIR)
-vscode_projects = read_projects_from_dir(consts.VSCODE_BASE_DIR)
-
-# Merge projects, removing duplicates based on project path
-seen_paths = set()
-unique_projects = []
-for p in projects + vscode_projects:
-	if p['arg'] not in seen_paths:
-		seen_paths.add(p['arg'])
-		unique_projects.append(p)
 
 # Sort by stats and then by title
-projects = sorted(unique_projects, key=lambda k: (-int(stats[k['arg']]) if k['arg'] in stats else 0, k['title']))
+projects = sorted(projects, key=lambda k: (-int(stats[k['arg']]) if k['arg'] in stats else 0, k['title']))
 
 # Filter by query
 if len(sys.argv) > 1 and sys.argv[1]:

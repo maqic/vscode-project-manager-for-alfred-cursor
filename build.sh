@@ -11,6 +11,7 @@ zip -r releases/cursor-project-manager.alfredworkflow \
     info.plist \
     *.py \
     README.md \
-    LICENSE
+    LICENSE \
+    *.png
 
 echo "打包完成：releases/cursor-project-manager.alfredworkflow"
